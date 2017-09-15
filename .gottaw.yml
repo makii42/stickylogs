@@ -1,0 +1,14 @@
+# What is this file? Check it out at https://github.com/makii42/gottaw !
+excludes:
+- .git
+- .hg
+- .vscode
+- .idea
+- '*-go-tmp-umask'
+- vendor
+- 'stickylogs*'
+pipeline:
+- go get -v .
+- go build -v .
+- go test -v ./...
+growl: true
