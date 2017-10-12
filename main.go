@@ -23,12 +23,10 @@ func main() {
 		os.Exit(1)
 	}
 	requestedContainer := flag.Arg(0)
-	filters := df.NewArgs()
-	filters.Add("container", requestedContainer)
 
 	docker, err := d.NewEnvClient()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error connecting to docker: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error connecting to docker: %s\n", err.Error())
 		os.Exit(2)
 	}
 	defer docker.Close()
@@ -39,8 +37,23 @@ func main() {
 	}
 	fmt.Printf("Connected to Docker v %s\n", pong.APIVersion)
 
+	listFilters := df.NewArgs()
+	listFilters.Add("name", requestedContainer)
+	containers, err := docker.ContainerList(ctx, dt.ContainerListOptions{
+		Filters: listFilters,
+		All:     true,
+	})
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Could not check if container is running: %s", err.Error())
+		os.Exit(4)
+	}
+	if len(containers) == 1 {
+		go StreamContainerLogs(os.Stdout, docker, containers[0].ID, requestedContainer)
+	}
+	eventFilters := df.NewArgs()
+	eventFilters.Add("container", requestedContainer)
 	msgC, errC := docker.Events(ctx, dt.EventsOptions{
-		Filters: filters,
+		Filters: eventFilters,
 	})
 	for {
 		select {

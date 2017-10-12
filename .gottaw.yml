@@ -11,4 +11,5 @@ pipeline:
 - go get -v .
 - go build -v .
 - go test -v ./...
+- go install
 growl: true
