@@ -1,0 +1,13 @@
+language: go
+sudo: false
+go:
+  - 1.8.x
+  - 1.9.x
+  - master
+os: 
+  - linux
+  - osx
+before_install:
+  - go get -v .
+#script:
+#  - $HOME/gopath/bin/goveralls -service=travis-ci
