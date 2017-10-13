@@ -7,7 +7,7 @@ You develop stuff locally, and your local build pipeline always restarts the doc
 
 Now, there is [`docker events`][de] next to [`docker logs`][dl], that tells you whenever a container stops or starts. 
 
-For now, `stickytail` looks for events for a `container-name`, and whenever a container by that name starts, the logs of it will be streamed to the console by `stickytail`. That will obviously stop when the container ends, but also *restart* as soon as another container with that name starts again.
+For now, `stickylogs` looks for events for a `container-name`, and whenever a container by that name starts, the logs of it will be streamed to the console by `stickylogs`. That will obviously stop when the container ends, but also *restart* as soon as another container with that name starts again.
 
 Installation
 ------------
